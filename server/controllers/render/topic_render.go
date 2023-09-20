@@ -22,7 +22,7 @@ func BuildTopic(topic *model.Topic, currentUser *model.User) *model.TopicRespons
 
 func BuildSimpleTopic(topic *model.Topic) *model.TopicResponse {
 	buildContent := topic.Type == constants.TopicTypeTweet // 动态时渲染内容
-	return _buildTopic(topic, buildContent)
+	return _buildTopic(topic, buildContent)                // 构建TopicResponse
 }
 
 func BuildSimpleTopics(topics []model.Topic, currentUser *model.User) []model.TopicResponse {
@@ -36,13 +36,13 @@ func BuildSimpleTopics(topics []model.Topic, currentUser *model.User) []model.To
 		for _, topic := range topics {
 			topicIds = append(topicIds, topic.Id)
 		}
-		likedTopicIds = services.UserLikeService.IsLiked(currentUser.Id, constants.EntityTopic, topicIds)
+		likedTopicIds = services.UserLikeService.IsLiked(currentUser.Id, constants.EntityTopic, topicIds) // 在话题点赞表中查找到该用户点赞过的话题
 	}
 
 	var responses []model.TopicResponse
 	for _, topic := range topics {
-		item := BuildSimpleTopic(&topic)
-		item.Liked = arrays.Contains(topic.Id, likedTopicIds)
+		item := BuildSimpleTopic(&topic)                      // 每一个话题都构建一个TopicResponse
+		item.Liked = arrays.Contains(topic.Id, likedTopicIds) // 填充TopicResponse内容；item.Liked：该话题是否被点赞
 		responses = append(responses, *item)
 	}
 	return responses

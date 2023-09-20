@@ -45,7 +45,7 @@ func (c *TopicController) GetNode_navs() *web.JsonResult {
 	return web.JsonData(nodes)
 }
 
-// 节点
+// 节点：话题页面最左边一列的信息，包括：推荐、最新、关注、交流等信息
 func (c *TopicController) GetNodes() *web.JsonResult {
 	nodes := render.BuildNodes(services.TopicNodeService.GetNodes())
 	return web.JsonData(nodes)
@@ -284,7 +284,7 @@ func (c *TopicController) GetTopics() *web.JsonResult {
 	if nodeId == constants.NodeIdFollow && user == nil {
 		return web.JsonError(errs.NotLogin)
 	}
-	topics, cursor, hasMore := services.TopicService.GetTopics(user, nodeId, cursor)
+	topics, cursor, hasMore := services.TopicService.GetTopics(user, nodeId, cursor) // 返回三个结果：所有话题、最近回复话题时间、是否还有更多话题未查询到
 	return web.JsonCursorData(render.BuildSimpleTopics(topics, user), strconv.FormatInt(cursor, 10), hasMore)
 }
 

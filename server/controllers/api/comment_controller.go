@@ -27,10 +27,10 @@ func (c *CommentController) GetComments() *web.JsonResult {
 	)
 	cursor = params.FormValueInt64Default(c.Ctx, "cursor", 0)
 
-	if entityType, err = params.FormValueRequired(c.Ctx, "entityType"); err != nil {
+	if entityType, err = params.FormValueRequired(c.Ctx, "entityType"); err != nil { // entityType是EntityTopic类型
 		return web.JsonError(err)
 	}
-	if entityId, err = params.FormValueInt64(c.Ctx, "entityId"); err != nil {
+	if entityId, err = params.FormValueInt64(c.Ctx, "entityId"); err != nil { // entityId是话题id
 		return web.JsonError(err)
 	}
 	currentUser := services.UserTokenService.GetCurrent(c.Ctx)

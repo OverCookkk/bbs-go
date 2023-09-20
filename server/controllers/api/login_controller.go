@@ -18,27 +18,28 @@ type LoginController struct {
 // 注册
 func (c *LoginController) PostSignup() *web.JsonResult {
 	var (
-		captchaId   = c.Ctx.PostValueTrim("captchaId")
-		captchaCode = c.Ctx.PostValueTrim("captchaCode")
-		email       = c.Ctx.PostValueTrim("email")
-		username    = c.Ctx.PostValueTrim("username")
-		password    = c.Ctx.PostValueTrim("password")
-		rePassword  = c.Ctx.PostValueTrim("rePassword")
-		nickname    = c.Ctx.PostValueTrim("nickname")
-		ref         = c.Ctx.FormValue("ref")
+		// TODO: remove this
+		// captchaId   = c.Ctx.PostValueTrim("captchaId")
+		// captchaCode = c.Ctx.PostValueTrim("captchaCode")
+		email      = c.Ctx.PostValueTrim("email")
+		username   = c.Ctx.PostValueTrim("username")
+		password   = c.Ctx.PostValueTrim("password")
+		rePassword = c.Ctx.PostValueTrim("rePassword")
+		nickname   = c.Ctx.PostValueTrim("nickname")
+		ref        = c.Ctx.FormValue("ref")
 	)
 	loginMethod := services.SysConfigService.GetLoginMethod()
 	if !loginMethod.Password {
 		return web.JsonErrorMsg("账号密码登录/注册已禁用")
 	}
-	if !captcha.VerifyString(captchaId, captchaCode) {
-		return web.JsonError(errs.CaptchaError)
-	}
+	// if !captcha.VerifyString(captchaId, captchaCode) {
+	// 	return web.JsonError(errs.CaptchaError)
+	// }
 	user, err := services.UserService.SignUp(username, email, nickname, password, rePassword)
 	if err != nil {
 		return web.JsonError(err)
 	}
-	return render.BuildLoginSuccess(user, ref)
+	return render.BuildLoginSuccess(user, ref) // BuildLoginSuccess中会生成包含token等信息的userToken对象返回给前端
 }
 
 // 用户名密码登录
@@ -61,7 +62,7 @@ func (c *LoginController) PostSignin() *web.JsonResult {
 	if err != nil {
 		return web.JsonError(err)
 	}
-	return render.BuildLoginSuccess(user, ref)
+	return render.BuildLoginSuccess(user, ref) // BuildLoginSuccess中会生成包含token等信息的userToken对象返回给前端
 }
 
 // 退出登录

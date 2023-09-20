@@ -117,7 +117,7 @@ func (s *commentService) Publish(userId int64, form model.CreateCommentForm) (*m
 			return err
 		}
 
-		if form.EntityType == constants.EntityTopic {
+		if form.EntityType == constants.EntityTopic { // 一级评论
 			if err := TopicService.onComment(tx, form.EntityId, comment); err != nil {
 				return err
 			}

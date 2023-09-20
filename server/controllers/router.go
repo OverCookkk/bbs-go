@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"bbs-go/controllers/admin"
+	"bbs-go/middleware"
 	"os"
 	"strings"
 
@@ -14,9 +16,6 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"bbs-go/controllers/api"
-
-	"bbs-go/controllers/admin"
-	"bbs-go/middleware"
 )
 
 func Router() {
@@ -50,12 +49,12 @@ func Router() {
 
 	// api
 	mvc.Configure(app.Party("/api"), func(m *mvc.Application) {
-		m.Party("/topic").Handle(new(api.TopicController))
+		m.Party("/topic").Handle(new(api.TopicController)) // 话题
 		m.Party("/article").Handle(new(api.ArticleController))
-		m.Party("/login").Handle(new(api.LoginController))
-		m.Party("/user").Handle(new(api.UserController))
+		m.Party("/login").Handle(new(api.LoginController)) // 登录、注册
+		m.Party("/user").Handle(new(api.UserController))   // 用户信息
 		m.Party("/tag").Handle(new(api.TagController))
-		m.Party("/comment").Handle(new(api.CommentController))
+		m.Party("/comment").Handle(new(api.CommentController)) // 评论
 		m.Party("/favorite").Handle(new(api.FavoriteController))
 		m.Party("/like").Handle(new(api.LikeController))
 		m.Party("/checkin").Handle(new(api.CheckinController))
@@ -71,7 +70,7 @@ func Router() {
 		m.Party("/user-report").Handle(new(api.UserReportController))
 	})
 
-	// admin
+	// admin：管理后台接口
 	mvc.Configure(app.Party("/api/admin"), func(m *mvc.Application) {
 		m.Router.Use(middleware.AdminAuth)
 		m.Party("/common").Handle(new(admin.CommonController))

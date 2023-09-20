@@ -210,7 +210,7 @@ func (s *topicService) GetTopicTags(topicId int64) []model.Tag {
 	return cache.TagCache.GetList(tagIds)
 }
 
-// GetTopics 帖子列表（最新、推荐、关注、节点）
+// GetTopics 帖子列表（最新、推荐、关注、节点），nodeId为  -1：推荐，  0：最新，  -2：关注
 func (s *topicService) GetTopics(user *model.User, nodeId, cursor int64) (topics []model.Topic, nextCursor int64, hasMore bool) {
 	var limit int = 20
 	if nodeId == constants.NodeIdFollow {
@@ -223,7 +223,7 @@ func (s *topicService) GetTopics(user *model.User, nodeId, cursor int64) (topics
 	}
 }
 
-// _GetNodeTopics 帖子列表（最新、推荐、节点）
+// _GetNodeTopics 帖子列表（最新、推荐、节点），nodeId为  -1：推荐，  0：最新，  -2：关注
 func (s *topicService) _GetNodeTopics(nodeId, cursor int64, limit int) (topics []model.Topic, nextCursor int64, hasMore bool) {
 	cnd := sqls.NewCnd()
 	if nodeId > 0 {

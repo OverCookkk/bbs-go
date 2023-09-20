@@ -106,7 +106,7 @@ func (s *userTokenService) GetUserToken(ctx iris.Context) string {
 	return ctx.GetHeader("X-User-Token")
 }
 
-// 生成
+// 生成userToken对象
 func (s *userTokenService) Generate(userId int64) (string, error) {
 	token := strs.UUID()
 	tokenExpireDays := SysConfigService.GetTokenExpireDays()

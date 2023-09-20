@@ -57,6 +57,8 @@ func newUserCache() *userCache {
 	}
 }
 
+// Get 调用c.cache.Get(userId)，首先检查指定键的值是否已经存在于缓存中，如果存在且未过期，则直接返回缓存中的值，而无需执行回调函数。
+// 只有当缓存中不存在或已过期时，就会触发执行userCache对象里cache里面的回调函数，也就是会去数据库中查询用户信息。
 func (c *userCache) Get(userId int64) *model.User {
 	if userId <= 0 {
 		return nil
